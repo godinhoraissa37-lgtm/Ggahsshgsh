@@ -1,5 +1,5 @@
 -- ========================================================
--- PAINEL MOBILE COM BOTÃO FLUTUANTE E LOOP DE TELEPORTE (0.2s)
+-- PAINEL MOBILE COM BOTÃO FLUTUANTE E LOOP DE TELEPORTE (EXATO)
 -- ========================================================
 
 local Players = game:GetService("Players")
@@ -170,7 +170,7 @@ CloseButton.MouseButton1Click:Connect(function()
 end)
 
 -----------------------------------------------------------
--- 5. LÓGICA DE TELEPORTE ATÉ TODOS OS PLAYERS (LOOP DE 0.2s)
+-- 5. LÓGICA DE TELEPORTE DENTRO DOS PLAYERS (0.2s)
 -----------------------------------------------------------
 local isTpActive = false
 
@@ -180,25 +180,21 @@ local function startTpLoop()
             local allPlayers = Players:GetPlayers()
             
             for _, targetPlayer in ipairs(allPlayers) do
-                -- Se o botão for desativado durante a lista, interrompe o loop na hora
                 if not isTpActive then break end
 
-                -- Verifica se o player alvo é válido e não é o próprio jogador local
                 if targetPlayer ~= LocalPlayer then
                     local myChar = LocalPlayer.Character
                     local targetChar = targetPlayer.Character
 
                     if myChar and myChar:FindFirstChild("HumanoidRootPart") and targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
-                        -- Teleporta o seu personagem para a posição do player alvo
-                        myChar.HumanoidRootPart.CFrame = targetChar.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
+                        -- Teleporta EXATAMENTE na posição/orientação do jogador alvo (dentro dele)
+                        myChar.HumanoidRootPart.CFrame = targetChar.HumanoidRootPart.CFrame
                     end
 
-                    -- Tempo de espera entre cada teleporte (0.2 segundos)
                     task.wait(0.2)
                 end
             end
 
-            -- Pequena pausa antes de reiniciar a lista inteira de jogadores
             task.wait(0.1)
         end
     end)
